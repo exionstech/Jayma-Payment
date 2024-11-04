@@ -20,6 +20,13 @@ function Payment1() {
       return;
     }
 
+    localStorage.setItem(
+      "url",
+      `${
+        import.meta.env.VITE_FRONTEND_STORE_URL
+      }/checkout-success?order_id=${orderId}`
+    );
+
     setStore({
       storeId: storeId,
       orderId: orderId,
@@ -38,7 +45,7 @@ function Payment1() {
   const handleRedirect = async (cashfreeInstance) => {
     const checkoutOptions = {
       paymentSessionId: paymentSessionId,
-      returnUrl: `${import.meta.env.VITE_FRONTEND_STORE_URL}/checkout-success`,
+      returnUrl: localStorage.getItem("url"),
     };
 
     await cashfreeInstance.checkout(checkoutOptions);

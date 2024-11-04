@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./App.css";
-import { initializeCashfree } from "./components/cashfree";
+import "../App.css";
+import { initializeCashfree } from "../components/cashfree";
 
 function Payment1() {
   const [cashfreeInstance, setCashfreeInstance] = useState(null);

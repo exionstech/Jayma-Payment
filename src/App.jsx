@@ -5,6 +5,10 @@ import { initializeCashfree } from "./components/cashfree";
 
 function Payment1() {
   const [cashfreeInstance, setCashfreeInstance] = useState(null);
+  const [store, setStore] = useState({
+    storeId: "",
+    orderId: "",
+  });
   const params = new URLSearchParams(window.location.search);
   const paymentSessionId = params.get("session_id");
   const storeId = params.get("store_id");
@@ -16,28 +20,28 @@ function Payment1() {
       return;
     }
 
-    initializeCashfree().then((instance) => {
-      setCashfreeInstance(instance);
-      handleRedirect(instance);
+    setStore({
+      storeId: storeId,
+      orderId: orderId,
     });
-  }, [paymentSessionId]);
+
+    const timeout = setTimeout(() => {
+      initializeCashfree().then((instance) => {
+        setCashfreeInstance(instance);
+        handleRedirect(instance);
+      });
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [paymentSessionId, storeId, orderId]);
 
   const handleRedirect = async (cashfreeInstance) => {
     const checkoutOptions = {
       paymentSessionId: paymentSessionId,
-      // returnUrl: ${import.meta.env.VITE_FRONTEND_STORE_URL}/checkout-success,
-      redirectTarget: "_self",
+      returnUrl: `${import.meta.env.VITE_FRONTEND_STORE_URL}/checkout-success`,
     };
 
     await cashfreeInstance.checkout(checkoutOptions);
-
-    await axios.post(
-      `${import.meta.env.VITE_WEBHOOK_STORE_URL}/${storeId}/webhook`,
-      {
-        storeId: storeId,
-        orderId: orderId,
-      }
-    );
   };
 
   return (

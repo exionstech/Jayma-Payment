@@ -1,34 +1,46 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import { cashfree } from "./components/cashfree";
+import { initializeCashfree } from "./components/cashfree";
 
 function App() {
+  const [cashfreeInstance, setCashfreeInstance] = useState(null);
   const params = new URLSearchParams(window.location.search);
   const paymentSessionId = params.get("session_id");
-  
-  if (!paymentSessionId) {
-    alert("Payment Session Id not found");
-  }
 
-  const handleRedirect = () => {
-    let checkoutOptions = {
+  useEffect(() => {
+    if (!paymentSessionId) {
+      alert("Payment Session Id not found");
+      return;
+    }
+
+    initializeCashfree().then((instance) => {
+      setCashfreeInstance(instance);
+      handleRedirect(instance);
+    });
+  }, [paymentSessionId]);
+
+  const handleRedirect = async (cashfreeInstance) => {
+    const checkoutOptions = {
       paymentSessionId: paymentSessionId,
-      returnUrl: "http://localhost:3000/cart",
     };
 
-    cashfree.checkout(checkoutOptions).then(function (result) {
-      if (result.error) {
-        alert(result.error.message);
-      }
-      if (result.redirect) {
-        console.log("Redirection");
-      }
-    });
+    const result = await cashfreeInstance
+      .checkout(checkoutOptions)
+      .then((result) => {
+        if (result.error) {
+          alert(result.error.message);
+        } else if (result.redirect) {
+          console.log("Redirection");
+        }
+      });
+    
+    console.log(result);
   };
+
   return (
-    <>
-      <button onClick={handleRedirect}>Pay Now</button>
-    </>
+    <div>
+      <h1>Processing Payment...</h1>
+    </div>
   );
 }
 

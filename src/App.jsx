@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./App.css";
 import { initializeCashfree } from "./components/cashfree";
 
@@ -9,6 +8,8 @@ function Payment1() {
     storeId: "",
     orderId: "",
   });
+  cashfreeInstance;
+  store;
   const params = new URLSearchParams(window.location.search);
   const paymentSessionId = params.get("session_id");
   const storeId = params.get("store_id");
@@ -52,8 +53,23 @@ function Payment1() {
   };
 
   return (
-    <div>
-      <h1>Processing Payment...</h1>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
+      <div className="relative w-full h-full max-w-screen-lg min-h-svh  md:max-h-screen flex items-center justify-center">
+        <img
+          src="/logos/site-logo.svg"
+          alt="Loader"
+          width={150}
+          height={150}
+          className="animate-zoom hidden md:block"
+        />
+        <img
+          src="/logos/site-logo.svg"
+          alt="Loader"
+          width={90}
+          height={90}
+          className="animate-zoom md:hidden"
+        />
+      </div>
     </div>
   );
 }

@@ -25,7 +25,7 @@ function Payment1() {
       "url",
       `${
         import.meta.env.VITE_FRONTEND_STORE_URL
-      }/checkout-success?order_id=${orderId}`
+      }/progress?order_id=${orderId}`
     );
 
     setStore({

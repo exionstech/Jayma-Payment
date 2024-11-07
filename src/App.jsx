@@ -46,7 +46,7 @@ function Payment1() {
   let cashfree;
   var initializeSDK = async function () {
     return (cashfree = await load({
-      mode: "sandbox",
+      mode: "production",
     }));
   };
 

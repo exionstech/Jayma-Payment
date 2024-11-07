@@ -58,7 +58,7 @@ function Payment1() {
 
     instance.checkout(checkoutOptions);
   };
-  
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
       <div className="relative w-full h-full max-w-screen-lg min-h-svh  md:max-h-screen flex items-center justify-center">

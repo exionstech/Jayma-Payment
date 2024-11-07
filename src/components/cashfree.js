@@ -5,7 +5,7 @@ let cashfree;
 async function initializeCashfree() {
   if (!cashfree) {
     cashfree = await load({
-      mode: "sandbox",
+      mode:"production"
     });
   }
   return cashfree;
